@@ -1,0 +1,455 @@
+data segment
+c db 10 dup(?)
+    x dw 107
+    d dw 146
+    w dw 137
+    h dw 125
+    i dw 130
+    j dw 141
+    f dw 120
+    u dw 116
+    k dw 136
+    v dw 115
+data segment
+; declaration de variables
+data ends
+spile segment para stack
+    db 256 dup(?)
+    bpile EQU this word
+    assume ds:data,cs:code,ss:spile
+code segment
+
+; Procedure to wait for a key press
+    
+    scanfs proc near 
+    ens: mov ah,0
+        int 16h
+        cmp al,13
+        je finsaisie
+        mov [si],al
+        inc si
+        mov ah, 14
+        int 10h
+        jmp ens
+    finsaisie:
+        ret
+    scanfs endp
+    
+    defmod proc near
+    mov ah, 0
+    int 10h
+    ret
+    defmod endp
+    
+    putPixel proc near
+    mov ah,12
+    int 10h
+    ret
+    putPixel endp
+    
+    drawhl proc near
+    add si,cx
+    enp: call putPixel
+    inc cx
+    cmp cx,si
+    jl enp
+    ret
+    drawhl endp
+    
+    drawvl proc near
+    add si,dx
+    enpv: call putPixel
+    inc dx
+    cmp dx,si
+    jl enpv
+    ret
+    drawvl endp
+    
+    drawolR proc near
+    add si,cx
+    enpR: call putPixel
+    inc cx
+    inc dx
+    cmp cx,si
+    jl enpR
+    ret
+    drawolR endp
+    
+    drawolL proc near
+    add si,dx
+    enpL: call putPixel
+    inc dx
+    dec cx
+    cmp dx,si
+    jl enpL
+    ret
+    drawolL endp    
+debut:  ; initialisation des registres segment
+        mov ax,data
+        mov ds,ax
+        mov al,13h
+        call defmod
+        ;HEAD
+        ;line horizontal 1
+        mov al,14
+        mov cx,100
+        mov dx,70
+        mov si,40
+        call drawhl
+        ;line horizontal 2
+        mov al,14
+        mov cx,100
+        mov dx,110
+        mov si,40
+        call drawhl
+        
+        ;line vertical 1
+        mov al,14
+        mov cx,100
+        mov dx,70
+        mov si,40
+        call drawvl
+        ;line vertical 2
+        mov al,14
+        mov cx,140
+        mov dx,70
+        mov si,40
+        call drawvl
+        
+        ;EYES
+        ;LEFT EYE
+        
+        ;line horizontal 1
+        mov al,10
+        mov cx,106
+        mov dx,85
+        mov si,5
+        call drawhl
+        ;line horizontal 2
+        mov al,10
+        mov cx,106
+        mov dx,90
+        mov si,5
+        call drawhl
+        
+        ;line vertical 1
+        mov al,10
+        mov cx,105
+        mov dx,85
+        mov si,5
+        call drawvl
+        ;line vertical 2
+        mov al,10
+        mov cx,110
+        mov dx,85
+        mov si,5
+        call drawvl
+        
+        
+        ;RIGHT EYE
+        
+        ;line horizontal 1
+        mov al,10
+        mov cx,130
+        mov dx,85
+        mov si,5
+        call drawhl
+        ;line horizontal 2
+        mov al,10
+        mov cx,130
+        mov dx,90
+        mov si,5
+        call drawhl
+        
+        ;line vertical 1
+        mov al,10
+        mov cx,129
+        mov dx,85
+        mov si,5
+        call drawvl
+        ;line vertical 2
+        mov al,10
+        mov cx,134
+        mov dx,85
+        mov si,5
+        call drawvl
+        
+        ;MOUTH
+        mov al,12
+        mov cx,115
+        mov dx,100
+        mov si,10
+        call drawhl
+        
+        ;BODY
+        ;line vertical 
+        mov al,15
+        mov cx,120
+        mov dx,110
+        mov si,40
+        call drawvl
+        
+        ;ARMS
+        ;oblique line right
+        mov al,15
+        mov cx,120
+        mov dx,115
+        mov si,20
+        call drawolR
+        ;oblique line left
+        mov al,15
+        mov cx,120
+        mov dx,115
+        mov si,20
+        call drawolL
+        
+        ;LEGS
+        ;oblique line right
+        mov al,1
+        mov cx,120
+        mov dx,150
+        mov si,20
+        call drawolR
+        ;oblique line left
+        mov al,1
+        mov cx,120
+        mov dx,150
+        mov si,20
+        call drawolL
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        ;move to the right with 10 pixels
+        
+        repeatt: 
+        call scanfs
+        
+        
+        mov si,0
+        incx: cmp si,10
+        je fin
+        dec x
+        inc si
+        jmp incx
+        fin:
+        
+        mov si,0
+        indx: cmp si,10
+        je finn
+        dec d
+        inc si
+        jmp indx
+        finn:
+        
+        
+        mov si,0
+        inhx: cmp si,10
+        je finh
+        dec h
+        inc si
+        jmp inhx
+        finh:
+        
+        mov si,0
+        inix: cmp si,10
+        je fini
+        dec i
+        inc si
+        jmp inix
+        fini:
+        
+        mov si,0
+        injx: cmp si,10
+        je finj
+        dec j
+        inc si
+        jmp injx
+        finj:
+        
+        mov si,0
+        infx: cmp si,10
+        je finf
+        dec f
+        inc si
+        jmp infx
+        finf:
+        
+        mov si,0
+        inux: cmp si,10
+        je finu
+        dec u
+        inc si
+        jmp inux
+        finu:
+        
+        mov si,0
+        inwx: cmp si,10
+        je finw
+        dec w
+        inc si
+        jmp inwx
+        finw:
+        
+        mov si,0
+        inkx: cmp si,10
+        je fink
+        dec k
+        inc si
+        jmp inkx
+        fink:
+        
+        mov si,0
+        invx: cmp si,10
+        je finv
+        dec v
+        inc si
+        jmp invx
+        finv:
+        
+        
+        
+        ; initialisation des registres segment
+        
+        mov al,13h
+        call defmod
+        ;HEAD
+        ;line horizontal 1
+        mov al,14
+        mov cx,x
+        mov dx,70
+        mov si,40
+        call drawhl
+        ;line horizontal 2
+        mov al,14
+        mov cx,x
+        mov dx,110
+        mov si,40
+        call drawhl
+        
+        ;line vertical 1
+        mov al,14
+        mov cx,x
+        mov dx,70
+        mov si,40
+        call drawvl
+        ;line vertical 2
+        mov al,14
+        mov cx,d    
+        mov dx,70
+        mov si,40
+        call drawvl
+        
+        ;EYES
+        ;LEFT EYE
+        
+        ;line horizontal 1
+        mov al,10
+        mov cx,u   
+        mov dx,85
+        mov si,5
+        call drawhl
+        ;line horizontal 2
+        mov al,10
+        mov cx,u
+        mov dx,90
+        mov si,5
+        call drawhl
+        
+        ;line vertical 1
+        mov al,10
+        mov cx,v  
+        mov dx,85
+        mov si,5
+        call drawvl
+        ;line vertical 2
+        mov al,10
+        mov cx,f  
+        mov dx,85
+        mov si,5
+        call drawvl
+        
+        
+        ;RIGHT EYE
+        
+        ;line horizontal 1
+        mov al,10
+        mov cx,w
+        mov dx,85
+        mov si,5
+        call drawhl
+        ;line horizontal 2
+        mov al,10
+        mov cx,w
+        mov dx,90
+        mov si,5
+        call drawhl
+        
+        ;line vertical 1
+        mov al,10
+        mov cx,k   
+        mov dx,85
+        mov si,5
+        call drawvl
+        ;line vertical 2
+        mov al,10
+        mov cx,j   
+        mov dx,85
+        mov si,5
+        call drawvl
+        
+        ;MOUTH
+        mov al,12
+        mov cx,h   
+        mov dx,100
+        mov si,10
+        call drawhl
+        
+        ;BODY
+        ;line vertical 
+        mov al,15
+        mov cx,i  
+        mov dx,110
+        mov si,40
+        call drawvl
+        
+        ;ARMS
+        ;oblique line right
+        mov al,15
+        mov cx,i
+        mov dx,115
+        mov si,20
+        call drawolR
+        ;oblique line left
+        mov al,15
+        mov cx,i
+        mov dx,115
+        mov si,20
+        call drawolL
+        
+        ;LEGS
+        ;oblique line right
+        mov al,1
+        mov cx,i
+        mov dx,150
+        mov si,20
+        call drawolR
+        ;oblique line left
+        mov al,1
+        mov cx,i
+        mov dx,150
+        mov si,20
+        call drawolL
+        
+        jmp repeatt
+        
+        
+
+code ends
+end debut
